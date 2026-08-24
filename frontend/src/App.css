@@ -1,0 +1,107 @@
+.App {
+  min-height: 100vh;
+  padding: 48px 20px;
+  background: #eef3f7;
+  color: #17212b;
+}
+
+main {
+  width: min(100%, 820px);
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0 0 28px;
+  color: #123047;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+form {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 0.7fr auto;
+  gap: 12px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #d7e0e7;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(18, 48, 71, 0.08);
+}
+
+input,
+button {
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 5px;
+  font: inherit;
+}
+
+input {
+  min-width: 0;
+  border: 1px solid #b9c8d3;
+}
+
+input:focus {
+  outline: 3px solid #b9e3dc;
+  border-color: #167d71;
+}
+
+button {
+  border: 0;
+  background: #167d71;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+button:hover {
+  background: #105e56;
+}
+
+[role="alert"] {
+  padding: 12px 14px;
+  border-left: 4px solid #c24132;
+  background: #fff0ed;
+  color: #8e2d22;
+}
+
+ul {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid #d7e0e7;
+  border-radius: 6px;
+}
+
+li button {
+  flex: 0 0 auto;
+  background: #c24132;
+}
+
+li button:hover {
+  background: #9f3024;
+}
+
+@media (max-width: 680px) {
+  .App {
+    padding: 28px 14px;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
