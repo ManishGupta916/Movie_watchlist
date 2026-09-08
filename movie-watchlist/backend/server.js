@@ -1,34 +1,37 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const movieRoutes = require("./Routes/movieRoutes");
 const cors = require("cors");
 require("dotenv").config();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-const MONGO_URI =
-  process.env.MONGO_URI ||
-  process.env.MONGODB_URI ||
-  "mongodb://127.0.0.1:27017/movie-manager";
+const movieRoutes = require("./Routes/movieRoutes");
 
+const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// Default Route
 app.get("/", (req, res) => {
-  res.json({ message: "Movie watchlist API is running" });
+  res.send("Movie Watchlist API is running...");
 });
 
+// Movie Routes
 app.use("/movies", movieRoutes);
 
+// MongoDB Connection
 mongoose
-  .connect(MONGO_URI)
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("MongoDB connected successfully");
+    console.log("✅ MongoDB Connected Successfully");
+
+    const PORT = process.env.PORT || 5000;
+
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`🚀 Server is running on port ${PORT}`);
     });
   })
   .catch((error) => {
-    console.error("MongoDB connection failed:", error.message);
-    process.exit(1);
+    console.error("❌ MongoDB Connection Failed");
+    console.error(error);
   });
