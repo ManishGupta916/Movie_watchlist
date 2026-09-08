@@ -3,123 +3,104 @@ const router = express.Router();
 
 const Movie = require("../models/Movie");
 
-// ===============================
-// GET /movies
-// Get all movies
-// ===============================
+// =============================
+// GET All Movies
+// =============================
 router.get("/", async (req, res) => {
   try {
-    const movies = await Movie.find().sort({ createdAt: -1 });
-
+    const movies = await Movie.find();
     res.status(200).json(movies);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to fetch movies",
-      error: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 });
 
-// ===============================
-// GET /movies/:id
-// Get one movie
-// ===============================
+// =============================
+// GET Movie By ID
+// =============================
 router.get("/:id", async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
 
     if (!movie) {
-      return res.status(404).json({
-        message: "Movie not found"
-      });
+      return res.status(404).json({ message: "Movie not found" });
     }
 
     res.status(200).json(movie);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to fetch movie",
-      error: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 });
 
-// ===============================
-// POST /movies
-// Create a new movie
-// ===============================
+// =============================
+// POST Add New Movie
+// =============================
 router.post("/", async (req, res) => {
   try {
-    const { title, genre, rating, watched } = req.body;
-
-    const movie = await Movie.create({
-      title,
-      genre,
-      rating,
-      watched
+    const movie = new Movie({
+      title: req.body.title,
+      genre: req.body.genre,
+      rating: req.body.rating,
+      watched: req.body.watched,
+      userName: req.body.userName,
+      comment: req.body.comment,
     });
 
-    res.status(201).json(movie);
+    const savedMovie = await movie.save();
+
+    res.status(201).json(savedMovie);
   } catch (error) {
-    res.status(400).json({
-      message: "Failed to create movie",
-      error: error.message
-    });
+    res.status(400).json({ message: error.message });
   }
 });
 
-// ===============================
-// PUT /movies/:id
-// Update a movie
-// ===============================
+// =============================
+// PUT Update Movie
+// =============================
 router.put("/:id", async (req, res) => {
   try {
-    const movie = await Movie.findByIdAndUpdate(
+    const updatedMovie = await Movie.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      {
+        title: req.body.title,
+        genre: req.body.genre,
+        rating: req.body.rating,
+        watched: req.body.watched,
+        userName: req.body.userName,
+        comment: req.body.comment,
+      },
       {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
 
-    if (!movie) {
-      return res.status(404).json({
-        message: "Movie not found"
-      });
+    if (!updatedMovie) {
+      return res.status(404).json({ message: "Movie not found" });
     }
 
-    res.status(200).json(movie);
+    res.status(200).json(updatedMovie);
   } catch (error) {
-    res.status(400).json({
-      message: "Failed to update movie",
-      error: error.message
-    });
+    res.status(400).json({ message: error.message });
   }
 });
 
-// ===============================
-// DELETE /movies/:id
-// Delete a movie
-// ===============================
+// =============================
+// DELETE Movie
+// =============================
 router.delete("/:id", async (req, res) => {
   try {
-    const movie = await Movie.findByIdAndDelete(req.params.id);
+    const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
 
-    if (!movie) {
-      return res.status(404).json({
-        message: "Movie not found"
-      });
+    if (!deletedMovie) {
+      return res.status(404).json({ message: "Movie not found" });
     }
 
     res.status(200).json({
       message: "Movie deleted successfully",
-      movie
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to delete movie",
-      error: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 });
 
