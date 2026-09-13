@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000/movies";
+const API_URL = "http://localhost:5002/movies";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
